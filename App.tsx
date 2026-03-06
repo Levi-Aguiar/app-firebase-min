@@ -37,6 +37,17 @@ export default function App() {
     return unsub;
   },[])
 
+  async function handleRegister(){
+    try {
+      console.log("Register -> ", email.trim());
+      const create = await createUserWithEmailAndPassword(auth, email.trim(), password);
+      console.log("Register Ok uid: ", create.user.uid);
+      Alert.alert("Conta criada com sucesso", create.user.email ?? "");
+    } catch (error) {
+      console.log("Register failed", error);      
+    }
+  }
+
   return (
     <KeyboardAvoidingView
     style={{ flex:1, marginTop:25}}
@@ -66,7 +77,8 @@ export default function App() {
             style={{borderWidth:1, borderRadius:10, padding:10}}
           ></TextInput>
           <View style={{flexDirection:"row", gap: 10, flexWrap: "wrap"}}>
-            <Pressable style={{padding:10, borderWidth:1, borderRadius:10 }}>
+            <Pressable onPress={handleRegister}
+            style={{padding:10, borderWidth:1, borderRadius:10 }}>
               <Text>Criar conta</Text>
             </Pressable>
             <Pressable style={{padding:10, borderWidth:1, borderRadius:10 }}>
