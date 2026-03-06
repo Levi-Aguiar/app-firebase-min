@@ -37,7 +37,7 @@ export const auth = ( () =>{
     } catch (error) {
         return getAuth(app)
     }
-})
+})();
 export const db = getFirestore(app);
 
 
