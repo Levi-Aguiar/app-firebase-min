@@ -31,3 +31,4 @@ Bloco3
 Pega o serviço Firestore daquele app (daquele projeto Firebase)
 É rápido basicamente "cria o cliente" para você usar o collection, addDoc, etc.
 db é o "módulo de banco de dados""# firebase"  
+"# app-firebase-min"  
