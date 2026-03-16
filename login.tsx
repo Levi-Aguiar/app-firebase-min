@@ -9,13 +9,8 @@ import {
 
 import { auth, db} from "./src/lib/firebase";
 import { 
-  onAuthStateChanged, signInWithEmailAndPassword,
-  createUserWithEmailAndPassword, signOut
+  onAuthStateChanged, signInWithEmailAndPassword,createUserWithEmailAndPassword
 } from "firebase/auth";
-
-import { 
-  addDoc, collection, getDocs, limit, orderBy, query, serverTimestamp 
-} from "firebase/firestore";
 
 type Note = {id: string, text: string};
 
@@ -23,12 +18,8 @@ export default function App() {
   const [userEmail, setUserEmail] = useState<string | null>(null);
 
   // Auth form
-  const [email, setEmail] = useState("fjsilva@sp.senac.br");
-  const [password, setPassword]= useState("a1b2c3");
-
-  // DB Firestore 
-  const [noteText, setNoteText] = useState("Primeira anotação");
-  const [notes, setNotes] = useState<Note[]>([]);
+  const [email, setEmail] = useState("");
+  const [password, setPassword]= useState("");
 
   useEffect( () =>{
     const unsub = onAuthStateChanged(auth, (u) => {
@@ -36,6 +27,17 @@ export default function App() {
     });
     return unsub;
   },[])
+
+    async function handleRegister(){
+      try {
+        console.log("Register -> ", email.trim());
+        const create = await createUserWithEmailAndPassword(auth, email.trim(), password);
+        console.log("Register Ok uid: ", create.user.uid);
+        Alert.alert("Conta criada com sucesso", create.user.email ?? "");
+      } catch (error) {
+        console.log("Register failed", error);      
+      }
+    }
 
   async function handleLOGIN() {
     try {
@@ -80,6 +82,10 @@ export default function App() {
             <Pressable onPress={handleLOGIN} 
             style={{padding:10, borderWidth:1, borderRadius:10 }}>
               <Text>Login</Text>
+            </Pressable>
+            <Pressable onPress={handleRegister}
+            style={{padding:10, borderWidth:1, borderRadius:10 }}>
+              <Text>Criar conta</Text>
             </Pressable>
           </View>
         </View>
